@@ -28,6 +28,8 @@ public class MyWindow extends JFrame implements ActionListener {
 	private ImageIcon printIcon, exitIcon, helpIcon, infoIcon;
 	private JButton saveButton, printButton, exitButton, sumButton, averageButton, minButton, maxButton, appInfoButton, authInfoButton;
 	
+	private StatusPanel statusPanel;
+	
 	public MyWindow() {
 		setTitle("MyWindow v.1.0.1");
 		setSize(WIDTH_WINDOW, HEIGHT_WINDOW);
@@ -77,6 +79,10 @@ public class MyWindow extends JFrame implements ActionListener {
 		createToolBar(
 			new JButton[] {saveButton, printButton, exitButton, sumButton, averageButton, minButton, maxButton, appInfoButton, authInfoButton}
 		);
+		
+		statusPanel = new StatusPanel();
+		
+		add(statusPanel, BorderLayout.SOUTH);
 	};
 	
 	private ImageIcon getResource(String resource) {
