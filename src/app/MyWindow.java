@@ -5,15 +5,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 
@@ -27,6 +32,11 @@ public class MyWindow extends JFrame implements ActionListener {
 
 	private ImageIcon printIcon, exitIcon, helpIcon, infoIcon;
 	private JButton saveButton, printButton, exitButton, sumButton, averageButton, minButton, maxButton, appInfoButton, authInfoButton;
+	
+	private JPanel contentPane, centerPanel, labelPanel;
+	private JLabel numberInputLabel, rowSliderLabel, colSliderLabel; 
+	private JTextField numberInput;
+	private JSlider rowSlider, colSlider;
 	
 	private StatusPanel statusPanel;
 	
@@ -43,10 +53,8 @@ public class MyWindow extends JFrame implements ActionListener {
 			}
 		});
 		
-		JPanel cp = (JPanel) getContentPane();
-		cp.setLayout(new BorderLayout());
-		setContentPane(cp);
-		
+		createContentPane(contentPane);
+
 	    String[] fileMenuItems = {"Zapisz", "Wyjście"};
 	    menuFile = createMenu("Plik", fileMenuItems);
 
@@ -60,6 +68,8 @@ public class MyWindow extends JFrame implements ActionListener {
 	    menuHelp = createMenu("Pomoc", helpMenuItems);
 	    
 	    createMenuBar(new JMenu[]{menuFile, menuDisplay, menuCalc, menuHelp});
+	    
+	  
 		
 		printIcon = getResource("print.jpg");
 		exitIcon = getResource("close.jpg");
@@ -80,10 +90,37 @@ public class MyWindow extends JFrame implements ActionListener {
 			new JButton[] {saveButton, printButton, exitButton, sumButton, averageButton, minButton, maxButton, appInfoButton, authInfoButton}
 		);
 		
+		
+		
+		numberInputLabel = createlabel("Wprowadź liczbę");
+		numberInput = createTextInput("0", 100, 20);
+		
+		rowSliderLabel = createlabel("Numer wiersza");
+		rowSlider = createSlider(1, 5, 3, 100, 40);
+		
+		colSliderLabel = createlabel("Numer kolumny");
+		colSlider = createSlider(1, 5, 3, 100, 40);
+		
+		labelPanel = createLabelPanel(
+			labelPanel, 
+			new JLabel[] {numberInputLabel, rowSliderLabel, colSliderLabel}, numberInput, 
+			new JSlider[] {rowSlider, colSlider}
+		);
+		
+		createCenterPanel(centerPanel, labelPanel);
+	
+
+		
 		statusPanel = new StatusPanel();
 		
 		add(statusPanel, BorderLayout.SOUTH);
 	};
+	
+	private void createContentPane(JPanel cp) {
+		cp = (JPanel) getContentPane();
+		cp.setLayout(new BorderLayout());
+		setContentPane(cp);
+	}
 	
 	private ImageIcon getResource(String resource) {
 		return new ImageIcon(MyWindow.class.getResource(ICON_PATH + resource));
@@ -135,6 +172,52 @@ public class MyWindow extends JFrame implements ActionListener {
 		}
 		
 		add(toolBar, BorderLayout.NORTH);
+	}
+	
+	private JLabel createlabel(String text) {
+		JLabel label = new JLabel(text);
+		
+		return label;
+	}
+	
+	private JTextField createTextInput(String defaultValue, int width, int height) {
+		JTextField input = new JTextField();
+		input.setText(defaultValue);
+		input.setPreferredSize(new Dimension(width, height));
+		
+		return input;
+	}
+	
+	private JSlider createSlider(int minValue, int maxValue, int value, int width, int height) {
+		JSlider slider = new JSlider(minValue, maxValue, value);
+		slider.setPreferredSize(new Dimension(width, height));
+		slider.setMajorTickSpacing(1);
+		slider.setPaintTicks(true);
+		slider.setPaintLabels(true);
+		
+		return slider;
+	}
+	
+	private JPanel createLabelPanel(JPanel labelPanel, JLabel[] labels, JTextField input, JSlider[] sliders) {
+		labelPanel = new JPanel(new FlowLayout());
+		
+		labelPanel.add(labels[0]);
+		labelPanel.add(input);
+		labelPanel.add(labels[1]);
+		labelPanel.add(sliders[0]);
+		labelPanel.add(labels[2]);
+		labelPanel.add(sliders[1]);
+		
+		add(labelPanel);
+		
+		return labelPanel;
+	}
+	
+	private void createCenterPanel(JPanel centerPanel, JPanel labelPanel) {
+		centerPanel = new JPanel(new FlowLayout());
+		centerPanel.add(labelPanel);
+		add(centerPanel, BorderLayout.CENTER);
+		this.setVisible(true);
 	}
 	
 	public void closeWindow() {
