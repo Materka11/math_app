@@ -7,6 +7,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,26 +19,47 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 
 public class MyWindow extends JFrame implements ActionListener {
 	
 	private final int HEIGHT_WINDOW = 450;
 	private final int WIDTH_WINDOW = 650;
+	
 	private static final String ICON_PATH = "/resources/";
+	
+	private static final String[] FILE_MENU_ITEMS = {"Zapisz", "Wyjście"};
+	private static final String[] DISPLAY_MENU_ITEMS = {"Pełny ekran"};
+	private static final String[] CALC_MENU_ITEMS = {"Suma", "Średnia", "Wartość Minimalna", "Wartość Maksymalna"};
+	private static final String[] HELP_MENU_ITEMS = {"Informacje o aplikacji", "Informacje o autorze"};
+	
+	private static final Object[][] TABLE_VALUES = {
+			{ 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0 }
+		};
+	private static final String[] TABLE_COLUMN_NAMES = { "1", "2", "3", "4", "5" };
 	
 	private JMenu menuFile, menuDisplay, menuCalc, menuHelp;
 
 	private ImageIcon printIcon, exitIcon, helpIcon, infoIcon;
-	private JButton saveButton, printButton, exitButton, sumButton, averageButton, minButton, maxButton, appInfoButton, authInfoButton;
+	private JButton saveButton, printButton, exitButton, sumButton, averageButton, minButton, maxButton, appInfoButton, authInfoButton, addButton, resetButton, fillButton, saveValuesButton;
 	
-	private JPanel contentPane, centerPanel, labelPanel;
+	private JPanel contentPane, centerPanel, labelPanel, tablePanel, buttonsPanel;
 	private JLabel numberInputLabel, rowSliderLabel, colSliderLabel; 
 	private JTextField numberInput;
 	private JSlider rowSlider, colSlider;
+	private JTable table;
+	private JScrollPane scrollPane;
 	
 	private StatusPanel statusPanel;
 	
@@ -55,21 +78,15 @@ public class MyWindow extends JFrame implements ActionListener {
 		
 		createContentPane(contentPane);
 
-	    String[] fileMenuItems = {"Zapisz", "Wyjście"};
-	    menuFile = createMenu("Plik", fileMenuItems);
-
-	    String[] displayMenuItems = {"Pełny ekran"};
-	    menuDisplay = createMenu("Widok", displayMenuItems);
-
-	    String[] calcMenuItems = {"Suma", "Średnia", "Wartość Minimalna", "Wartość Maksymalna"};
-	    menuCalc = createMenu("Obliczenia", calcMenuItems);
-
-	    String[] helpMenuItems = {"Informacje o aplikacji", "Informacje o autorze"};
-	    menuHelp = createMenu("Pomoc", helpMenuItems);
+		
+	    menuFile = createMenu("Plik", FILE_MENU_ITEMS);
+	    menuDisplay = createMenu("Widok", DISPLAY_MENU_ITEMS);
+	    menuCalc = createMenu("Obliczenia", CALC_MENU_ITEMS);
+	    menuHelp = createMenu("Pomoc", HELP_MENU_ITEMS);
 	    
 	    createMenuBar(new JMenu[]{menuFile, menuDisplay, menuCalc, menuHelp});
 	    
-	  
+	
 		
 		printIcon = getResource("print.jpg");
 		exitIcon = getResource("close.jpg");
@@ -102,13 +119,28 @@ public class MyWindow extends JFrame implements ActionListener {
 		colSlider = createSlider(1, 5, 3, 100, 40);
 		
 		labelPanel = createLabelPanel(
-			labelPanel, 
 			new JLabel[] {numberInputLabel, rowSliderLabel, colSliderLabel}, numberInput, 
 			new JSlider[] {rowSlider, colSlider}
 		);
+			
 		
-		createCenterPanel(centerPanel, labelPanel);
-	
+		
+		table = createTable(TABLE_VALUES, TABLE_COLUMN_NAMES);
+				
+		scrollPane = createScrollPane(table);
+		
+		
+		addButton = createButton(null, "DODAJ", "DODAJ");
+		resetButton = createButton(null, "WYZERUJ", "WYZERUJ");
+		fillButton = createButton(null, "WYPEŁNIJ", "WYPEŁNIJ");
+		saveValuesButton = createButton(null, "ZAPISZ", "ZAPISZ");
+
+		buttonsPanel = createButtonsPanel(new JButton[] {addButton, resetButton, fillButton, saveValuesButton});
+				
+		tablePanel = createTablePanel(scrollPane, buttonsPanel);
+				
+		createCenterPanel(labelPanel, tablePanel);
+		
 
 		
 		statusPanel = new StatusPanel();
@@ -198,8 +230,8 @@ public class MyWindow extends JFrame implements ActionListener {
 		return slider;
 	}
 	
-	private JPanel createLabelPanel(JPanel labelPanel, JLabel[] labels, JTextField input, JSlider[] sliders) {
-		labelPanel = new JPanel(new FlowLayout());
+	private JPanel createLabelPanel(JLabel[] labels, JTextField input, JSlider[] sliders) {
+		JPanel labelPanel = new JPanel(new FlowLayout());
 		
 		labelPanel.add(labels[0]);
 		labelPanel.add(input);
@@ -213,9 +245,54 @@ public class MyWindow extends JFrame implements ActionListener {
 		return labelPanel;
 	}
 	
-	private void createCenterPanel(JPanel centerPanel, JPanel labelPanel) {
-		centerPanel = new JPanel(new FlowLayout());
+	private JPanel createTablePanel(JScrollPane scrollPane, JPanel buttonsPanel) {
+		JPanel tablePanel = new JPanel(new FlowLayout());
+		
+		tablePanel.add(scrollPane);
+		tablePanel.add(buttonsPanel);
+		
+		return tablePanel;
+	}
+	
+	private JTable createTable(Object[][] value, String[] colNames) {
+		table = new JTable(value, colNames);
+		
+		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		table.setFont(new Font("Calibri", Font.PLAIN, 13));
+		table.setEnabled(false);
+		
+		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
+		table.getColumnModel().getColumn(0).setCellRenderer(r);
+		table.getColumnModel().getColumn(1).setCellRenderer(r);
+		table.getColumnModel().getColumn(2).setCellRenderer(r);
+		table.getColumnModel().getColumn(3).setCellRenderer(r);
+		table.getColumnModel().getColumn(4).setCellRenderer(r);
+		
+		return table;
+	}
+	
+	private JScrollPane createScrollPane(JTable table) {
+		JScrollPane scrollPane = new JScrollPane(table);
+		
+		scrollPane.setPreferredSize(new Dimension(450, 110));
+		
+		return scrollPane;
+	}
+	
+	private JPanel createButtonsPanel(JButton[] buttons) {
+		JPanel buttonsPanel = new JPanel(new GridLayout(4, 1));
+		
+		for (JButton button : buttons) {
+			buttonsPanel.add(button);
+		}
+		
+		return buttonsPanel;
+	}
+	
+	private void createCenterPanel(JPanel labelPanel, JPanel tablePanel) {
+		JPanel centerPanel = new JPanel(new FlowLayout());
 		centerPanel.add(labelPanel);
+		centerPanel.add(tablePanel);
 		add(centerPanel, BorderLayout.CENTER);
 		this.setVisible(true);
 	}
