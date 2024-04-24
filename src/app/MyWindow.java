@@ -5,13 +5,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -22,9 +26,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 
@@ -48,13 +55,14 @@ public class MyWindow extends JFrame implements ActionListener {
 			{ 0, 0, 0, 0, 0 }
 		};
 	private static final String[] TABLE_COLUMN_NAMES = { "1", "2", "3", "4", "5" };
+	private static final String[] CALCULATIONS = {"Suma","Średnia","Minimum","Maksimum"};
 	
 	private JMenu menuFile, menuDisplay, menuCalc, menuHelp;
 
 	private ImageIcon printIcon, exitIcon, helpIcon, infoIcon;
 	private JButton saveButton, printButton, exitButton, sumButton, averageButton, minButton, maxButton, appInfoButton, authInfoButton, addButton, resetButton, fillButton, saveValuesButton;
 	
-	private JPanel contentPane, centerPanel, labelPanel, tablePanel, buttonsPanel;
+	private JPanel contentPane, labelPanel, tablePanel, buttonsPanel, calcPanel, textPanel, centerPanel, buttomPanel;
 	private JLabel numberInputLabel, rowSliderLabel, colSliderLabel; 
 	private JTextField numberInput;
 	private JSlider rowSlider, colSlider;
@@ -135,13 +143,21 @@ public class MyWindow extends JFrame implements ActionListener {
 		fillButton = createButton(null, "WYPEŁNIJ", "WYPEŁNIJ");
 		saveValuesButton = createButton(null, "ZAPISZ", "ZAPISZ");
 
-		buttonsPanel = createButtonsPanel(new JButton[] {addButton, resetButton, fillButton, saveValuesButton});
-				
+		buttonsPanel = createButtonsPanel(new JButton[] {addButton, resetButton, fillButton, saveValuesButton});	
 		tablePanel = createTablePanel(scrollPane, buttonsPanel);
 				
-		createCenterPanel(labelPanel, tablePanel);
+		centerPanel = createCenterPanel(labelPanel, tablePanel);
 		
+		
+		
+		calcPanel = createCalcPanel(CALCULATIONS);
+		textPanel = createTextPanel("Uzyskany wynik");
+		
+		buttomPanel = createButtomPanel(calcPanel, textPanel);
 
+		createMainPanel(centerPanel, buttomPanel);
+		
+		
 		
 		statusPanel = new StatusPanel();
 		
@@ -289,12 +305,69 @@ public class MyWindow extends JFrame implements ActionListener {
 		return buttonsPanel;
 	}
 	
-	private void createCenterPanel(JPanel labelPanel, JPanel tablePanel) {
+	private JPanel createCenterPanel(JPanel labelPanel, JPanel tablePanel) {
 		JPanel centerPanel = new JPanel(new FlowLayout());
+		
 		centerPanel.add(labelPanel);
 		centerPanel.add(tablePanel);
 		add(centerPanel, BorderLayout.CENTER);
 		this.setVisible(true);
+		
+		return centerPanel;
+	}
+	
+	private JPanel createCalcPanel(String[] calculations) {
+		JPanel calcPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+		JLabel label = new JLabel("Obliczenia");
+		JButton resolveButton = new JButton("Oblicz");
+		JComboBox calculationComboBox = new JComboBox<>(calculations);
+
+		calcPanel.add(label);
+		calcPanel.add(calculationComboBox);
+		calcPanel.add(resolveButton);
+		
+		return calcPanel;
+
+	}
+	
+	private JPanel createTextPanel(String name) {
+		JPanel textPanel = new JPanel(new FlowLayout());
+		textPanel.setBorder(BorderFactory.createTitledBorder(
+				null, name, TitledBorder.CENTER, TitledBorder.TOP
+		));
+
+		JTextArea textArea = new JTextArea(4,20);
+		textArea.setLineWrap(true);
+		textArea.setEditable(false);
+		textArea.setPreferredSize(new Dimension(WIDTH_WINDOW - 50, 0));
+		JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(WIDTH_WINDOW - 50, 0));
+		Border textBorder = BorderFactory.createLineBorder(Color.BLACK);
+		textArea.setBorder(textBorder);
+		
+		textPanel.add(textArea);
+		
+		return textPanel;
+	}
+	
+	private JPanel createButtomPanel(JPanel calcPanel, JPanel textPanel) {
+		JPanel buttomPanel = new JPanel();
+		
+		buttomPanel.setLayout(new BoxLayout(buttomPanel, BoxLayout.Y_AXIS));  
+		buttomPanel.add(calcPanel);
+		buttomPanel.add(textPanel);
+		this.setVisible(true);
+		
+		return buttomPanel;
+	}
+	
+	private void createMainPanel(JPanel centerPanel, JPanel buttomPanel) {
+	    JPanel mainPanel = new JPanel(new BorderLayout());
+	    mainPanel.add(centerPanel, BorderLayout.CENTER);
+	    mainPanel.add(buttomPanel, BorderLayout.SOUTH);
+	    
+	    add(mainPanel, BorderLayout.CENTER);
 	}
 	
 	public void closeWindow() {
