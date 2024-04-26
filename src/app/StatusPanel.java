@@ -19,6 +19,7 @@ public class StatusPanel extends JPanel {
 	public StatusPanel() {
 		setLayout(new BorderLayout());
 		initGUI();
+		
 		add(createCenterPanel(), BorderLayout.CENTER);
 	}
 	
