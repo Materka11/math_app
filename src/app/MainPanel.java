@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
 		this.myWindow = myWindow;
 		
 		centerPanel = new CenterPanel(myWindow);	
-		bottomPanel = new BottomPanel(myWindow);
+		bottomPanel = new BottomPanel(myWindow, centerPanel.getTable());
 		
 		createMainPanel(centerPanel, bottomPanel);
 	}

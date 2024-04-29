@@ -104,6 +104,10 @@ public class CenterPanel extends JPanel implements ActionListener {
 		add(centerPanel, BorderLayout.CENTER);
 		this.setVisible(true);
 	}
+	
+	public JTable getTable() {
+		return table;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

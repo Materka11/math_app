@@ -24,7 +24,7 @@ public class StatusPanel extends JPanel {
 	}
 	
 	private void initGUI() {
-		eventLabel = new JLabel("Stat aplikacji", JLabel.LEFT);
+		eventLabel = new JLabel("Start aplikacji", JLabel.LEFT);
 		numRow = new JTextField("1");
 		numRow.setHorizontalAlignment(JTextField.RIGHT);
 		numCol = new JTextField("1");
