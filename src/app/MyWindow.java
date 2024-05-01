@@ -21,7 +21,7 @@ public class MyWindow extends JFrame implements ActionListener {
 	
 	private MenuBar menuBar;
 	private ToolBar toolBar;
-	private MainPanel mainPanel;
+	private CenterPanel centerPanel;
 	private StatusPanel statusPanel;
 	
 	public MyWindow() {
@@ -45,8 +45,8 @@ public class MyWindow extends JFrame implements ActionListener {
 		toolBar = new ToolBar(this);
 		add(toolBar, BorderLayout.NORTH);
 		
-		mainPanel = new MainPanel(this);
-		add(mainPanel, BorderLayout.CENTER);
+		centerPanel = new CenterPanel(this);	
+		add(centerPanel, BorderLayout.CENTER);
 		
 		statusPanel = new StatusPanel();
 		add(statusPanel, BorderLayout.SOUTH);

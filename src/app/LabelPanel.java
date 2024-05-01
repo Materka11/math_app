@@ -69,5 +69,16 @@ public class LabelPanel extends JPanel {
 		
 		add(labelPanel);
 	}
+	
+	public JSlider getColSlider() {
+		return colSlider;
+	}
 
+	public JSlider getRowSlider() {
+		return rowSlider;
+	}
+	
+	public JTextField getNumberInput() {
+		return numberInput;
+	}
 }

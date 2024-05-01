@@ -9,11 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
 
 public class CenterPanel extends JPanel implements ActionListener {
 	private static final Object[][] TABLE_VALUES = {
@@ -26,15 +31,18 @@ public class CenterPanel extends JPanel implements ActionListener {
 	private static final String[] TABLE_COLUMN_NAMES = { "1", "2", "3", "4", "5" };
 	
 	private JButton addButton, resetButton, fillButton, saveValuesButton;
-	private JPanel labelPanel, tablePanel, buttonsPanel;
+	private JPanel tablePanel, buttonsPanel;
 	private JScrollPane scrollPane;
 	private JTable table;
+	private LabelPanel labelPanel;
+	private BottomPanel bottomPanel;
 	
 	private MyWindow myWindow;
-
+	
 	public CenterPanel(MyWindow myWindow) {
 		this.myWindow = myWindow;
 		labelPanel = new LabelPanel();
+		bottomPanel = new BottomPanel(myWindow, table);
 		
 		table = createTable(TABLE_VALUES, TABLE_COLUMN_NAMES);
 		scrollPane = createScrollPane(table);
@@ -101,17 +109,30 @@ public class CenterPanel extends JPanel implements ActionListener {
 		
 		centerPanel.add(labelPanel, BorderLayout.NORTH);
 	    centerPanel.add(tablePanel, BorderLayout.CENTER);
+	    centerPanel.add(bottomPanel, BorderLayout.SOUTH);
 		add(centerPanel, BorderLayout.CENTER);
 		this.setVisible(true);
 	}
 	
-	public JTable getTable() {
-		return table;
+	public void addToTable(JSlider colSlider, JSlider rowSlider, JTable table, JTextArea textArea, JTextField numberInput) {
+		int row = colSlider.getValue() - 1;
+	    int column = rowSlider.getValue() - 1;
+	    
+	    try {
+	        int number = Integer.parseInt(numberInput.getText());
+	        TableModel model = table.getModel();
+	        model.setValueAt(number, row, column);
+	        textArea.setText("Liczba "+ number + " została dodana do tabeli.");
+	    } catch (NumberFormatException ex) {
+	        JOptionPane.showMessageDialog(textArea, "Podany znak nie jest liczbą.");
+	    }
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getSource() == addButton) {
+			addToTable(labelPanel.getColSlider(), labelPanel.getRowSlider(), table, bottomPanel.getTextArea(), labelPanel.getNumberInput());
+		}
 		
 	}
 }

@@ -88,6 +88,10 @@ public class BottomPanel extends JPanel implements ActionListener {
 		this.setVisible(true);
 	}
 	
+	public JTextArea getTextArea() {
+		return textArea;
+	}
+	
 	public int getSum(JTable table) {
 		int sum = 0;
 		TableModel model = table.getModel();
