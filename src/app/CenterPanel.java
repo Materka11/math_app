@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -42,14 +43,14 @@ public class CenterPanel extends JPanel implements ActionListener {
 	public CenterPanel(MyWindow myWindow) {
 		this.myWindow = myWindow;
 		labelPanel = new LabelPanel();
-		bottomPanel = new BottomPanel(myWindow, table);
 		
 		table = createTable(TABLE_VALUES, TABLE_COLUMN_NAMES);
 		scrollPane = createScrollPane(table);
 		initGUI();
 		buttonsPanel = createButtonsPanel(new JButton[] {addButton, resetButton, fillButton, saveValuesButton});	
 		tablePanel = createTablePanel(scrollPane, buttonsPanel);
-				
+		
+		bottomPanel = new BottomPanel(myWindow, table);
 		createCenterPanel(labelPanel, tablePanel);
 	}
 	
@@ -128,11 +129,46 @@ public class CenterPanel extends JPanel implements ActionListener {
 	    }
 	}
 
+	public void resetTable(JTable table, JTextArea textArea) {
+		TableModel tableModel = table.getModel();
+
+        int rows = tableModel.getRowCount();
+        int cols = tableModel.getColumnCount();
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                tableModel.setValueAt(0, row, col);
+            }
+        }
+
+        textArea.setText("Tabela została zresetowana");
+	}
+	
+	public void fillTable(JTable table, JTextArea textArea) {
+		TableModel tableModel = table.getModel();
+
+	    Random rand = new Random();
+	    int rows = tableModel.getRowCount();
+	    int cols = tableModel.getColumnCount();
+	    for (int row = 0; row < rows; row++) {
+	        for (int col = 0; col < cols; col++) {
+	            int randomNumber = rand.nextInt(100);
+	            tableModel.setValueAt(randomNumber, row, col);
+	        }
+	    }
+
+	    textArea.setText("Tabela została wypełniona losowymi liczbami");
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == addButton) {
 			addToTable(labelPanel.getColSlider(), labelPanel.getRowSlider(), table, bottomPanel.getTextArea(), labelPanel.getNumberInput());
 		}
-		
+		if(e.getSource() == resetButton) {
+			resetTable(table, bottomPanel.getTextArea());
+		}
+		if(e.getSource() == fillButton) {
+			fillTable(table, bottomPanel.getTextArea());
+		}
 	}
 }
