@@ -2,9 +2,14 @@ package app;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -20,6 +25,10 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class CenterPanel extends JPanel implements ActionListener {
 	private static final Object[][] TABLE_VALUES = {
@@ -159,6 +168,38 @@ public class CenterPanel extends JPanel implements ActionListener {
 	    textArea.setText("Tabela została wypełniona losowymi liczbami");
 	}
 	
+	public void saveTable(JTable table, JTextArea textArea) {
+		Frame parentFrame = JOptionPane.getFrameForComponent(null);
+
+	    FileDialog fileDialog = new FileDialog(parentFrame, "Wybierz miejsce zapisu", FileDialog.SAVE);
+	    fileDialog.setFile("Tabela.txt");
+	    fileDialog.setLocationRelativeTo(null);
+	    fileDialog.setVisible(true);
+
+	    String directory = fileDialog.getDirectory();
+	    String fileName = fileDialog.getFile();
+
+	    if (directory != null && fileName != null) {
+	        String filePath = directory + fileName;
+	        try {
+	            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+	            for (int row = 0; row < table.getRowCount(); row++) {
+	                for (int col = 0; col < table.getColumnCount(); col++) {
+	                    writer.write("[" + row + "," + col + "]: ");
+	                    writer.write(String.valueOf(table.getValueAt(row, col)));
+	                    writer.write("\t");
+	                }
+	                writer.newLine();
+	            }
+	            writer.close();
+	            textArea.setText("Tabela zapisana do pliku");
+	        } catch (IOException e) {
+	            System.out.println("Nie można zapisać do pliku");
+	            e.printStackTrace();
+	        }
+	    }
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == addButton) {
@@ -169,6 +210,9 @@ public class CenterPanel extends JPanel implements ActionListener {
 		}
 		if(e.getSource() == fillButton) {
 			fillTable(table, bottomPanel.getTextArea());
+		}
+		if(e.getSource() == saveValuesButton) {
+			saveTable(table, bottomPanel.getTextArea());
 		}
 	}
 }
