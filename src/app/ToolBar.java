@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
 public class ToolBar extends JPanel implements ActionListener {
@@ -18,12 +20,20 @@ public class ToolBar extends JPanel implements ActionListener {
 	private JToolBar toolBar;
 	
 	private MyWindow myWindow;
+	private CenterPanel centerPanel;
+	private BottomPanel bottomPanel;
+	private JTable table;
+	private JTextArea textArea;
 	
-	public ToolBar(MyWindow myWindow) {
+	public ToolBar(MyWindow myWindow, CenterPanel centerPanel) {
 		this.myWindow = myWindow;
+		this.centerPanel = centerPanel;
+		this.bottomPanel = centerPanel.getBottomPanel();
+		this.table = centerPanel.getTable();
 		
 		setLayout(new BorderLayout());
 		initGUI();
+		textArea = bottomPanel.getTextArea();
 
 		toolBar = createToolBar(
 			new JButton[] {
@@ -68,6 +78,25 @@ public class ToolBar extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == exitButton) {
 			myWindow.closeWindow();
+		}
+		if(e.getSource() == sumButton) {
+			int sum = bottomPanel.getSum(table);
+			textArea.setText("Suma elementów wynosi: " + sum);
+		}
+		if(e.getSource() == averageButton) {
+			double average = bottomPanel.getAverage(table);
+			textArea.setText("Średnia wartość elementów wynosi: " + average);
+		}
+		if(e.getSource() == minButton) {
+			int min = bottomPanel.getMin(table);
+			textArea.setText("Najmniejsza wartość w tabeli to: " + min);
+		}
+		if(e.getSource() == maxButton) {
+			int max = bottomPanel.getMax(table);
+			textArea.setText("Największa wartość w tabeli to: " + max);
+		}
+		if(e.getSource() == saveButton) {
+			centerPanel.saveTable(table, textArea);
 		}
 	}
 }

@@ -22,7 +22,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
 		
 		initGUI();
 		
-	    createMenuBar(new JMenu[]{menuFile, menuDisplay, menuCalc, menuHelp});
+		add(menuFile);
+		add(menuDisplay);
+		add(menuCalc);
+		add(menuHelp);
 	}
 	
 	private void initGUI() {
@@ -44,14 +47,6 @@ public class MenuBar extends JMenuBar implements ActionListener {
 	    return menu;
 	}
 	
-	private void createMenuBar(JMenu[] menus) {
-		JMenuBar menuBar = new JMenuBar();
-		
-		for(JMenu menu : menus) {
-			menuBar.add(menu);
-		}
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Wyjście")) {

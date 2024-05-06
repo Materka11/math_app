@@ -115,7 +115,6 @@ public class BottomPanel extends JPanel implements ActionListener {
 	}
 	
 
-	
 	public int getMin(JTable table) {
 		int min = Integer.MAX_VALUE;
 		TableModel model = table.getModel();

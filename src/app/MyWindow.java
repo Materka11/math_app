@@ -11,8 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
-
 public class MyWindow extends JFrame implements ActionListener {
 	private final int HEIGHT_WINDOW = 450;
 	private final int WIDTH_WINDOW = 650;
@@ -41,12 +39,12 @@ public class MyWindow extends JFrame implements ActionListener {
 
 		menuBar = new MenuBar(this);
 		setJMenuBar(menuBar);
-	    
-		toolBar = new ToolBar(this);
-		add(toolBar, BorderLayout.NORTH);
 		
 		centerPanel = new CenterPanel(this);	
 		add(centerPanel, BorderLayout.CENTER);
+		
+		toolBar = new ToolBar(this, centerPanel);
+		add(toolBar, BorderLayout.NORTH);
 		
 		statusPanel = new StatusPanel();
 		add(statusPanel, BorderLayout.SOUTH);

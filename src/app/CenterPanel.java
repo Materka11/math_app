@@ -200,6 +200,14 @@ public class CenterPanel extends JPanel implements ActionListener {
 	    }
 	}
 	
+	public BottomPanel getBottomPanel() {
+		return bottomPanel;
+	}
+	
+	public JTable getTable() {
+		return table;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == addButton) {
