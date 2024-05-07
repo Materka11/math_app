@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class MyWindow extends JFrame implements ActionListener {
+public class MyWindow extends JFrame {
 	private final int HEIGHT_WINDOW = 450;
 	private final int WIDTH_WINDOW = 650;
 	
@@ -36,14 +36,14 @@ public class MyWindow extends JFrame implements ActionListener {
 		});
 		
 		createContentPane(contentPane);
-
-		menuBar = new MenuBar(this);
-		setJMenuBar(menuBar);
 		
 		centerPanel = new CenterPanel(this);	
 		add(centerPanel, BorderLayout.CENTER);
 		
-		toolBar = new ToolBar(this, centerPanel);
+		menuBar = new MenuBar(this, centerPanel);
+		setJMenuBar(menuBar);
+		
+		toolBar = new ToolBar(this, centerPanel, menuBar);
 		add(toolBar, BorderLayout.NORTH);
 		
 		statusPanel = new StatusPanel();
@@ -97,12 +97,5 @@ public class MyWindow extends JFrame implements ActionListener {
 	
 	public int getWidthWindow() {
 		return WIDTH_WINDOW;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-//		if(e.getActionCommand().equals("Wyjście") || e.getSource() == exitButton) {
-//			closeWindow();
-//		}
 	}
 }
