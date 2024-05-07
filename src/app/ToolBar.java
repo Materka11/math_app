@@ -74,11 +74,11 @@ public class ToolBar extends JPanel implements ActionListener {
 		printButton = myWindow.createButton(printIcon, "drukuj", "DRUKUJ PLIK", this);
 		exitButton = myWindow.createButton(exitIcon, "wyjście", "WYJŚCIE", this);	
 		sumButton = myWindow.createButton(sumIcon, "Σ", "SUMUJ WARTOŚĆI TABELI", this);
-		averageButton = myWindow.createButton(averageIcon, "x̅", "ŚREDNIA WARTOŚĆ KOMUREK W TABELI", this);
+		averageButton = myWindow.createButton(averageIcon, "x̅", "ŚREDNIA WARTOŚĆ KOMÓREK W TABELI", this);
 		minButton = myWindow.createButton(minIcon, "MIN", "NAJMNIEJSZA WARTOŚĆ", this);
 		maxButton = myWindow.createButton(maxIcon, "MAX", "NAJWIĘKSZA WARTOŚĆ W TABELI", this);
 		helpButton = myWindow.createButton(helpIcon, "pomoc", "POMOC", this);
-		infoButton = myWindow.createButton(infoIcon, "informacje", "INOFORMACJE", this);
+		infoButton = myWindow.createButton(infoIcon, "informacje", "INFORMACJE", this);
 	}
 	
 	private ImageIcon getResource(String resource) {
