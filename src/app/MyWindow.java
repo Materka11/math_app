@@ -85,6 +85,7 @@ public class MyWindow extends JFrame {
 		
 		if(icon != null) {
 			button = new JButton(icon);
+			button.setToolTipText(tooltipText);
 		} else {
 			button = new JButton(name);
 			button.setToolTipText(tooltipText);

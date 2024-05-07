@@ -16,8 +16,9 @@ import javax.swing.JToolBar;
 
 public class ToolBar extends JPanel implements ActionListener {
 	private static final String ICON_PATH = "/resources/";
+	private static final int ICON_WIDTH = 24;
 	
-	private ImageIcon printIcon, exitIcon, helpIcon, infoIcon;
+	private ImageIcon saveIcon, printIcon, exitIcon, sumIcon, averageIcon, minIcon, maxIcon, helpIcon, infoIcon;
 	private JButton saveButton, printButton, exitButton, sumButton, averageButton, minButton, maxButton, helpButton, infoButton;
 	
 	private JToolBar toolBar;
@@ -49,20 +50,35 @@ public class ToolBar extends JPanel implements ActionListener {
 	}
 	
 	private void initGUI() {
-		printIcon = getResource("print.jpg");
-		exitIcon = getResource("close.jpg");
-		helpIcon = getResource("help_context.jpg");
-		infoIcon = getResource("about.jpg");
-
-		saveButton = myWindow.createButton(null, "zapisz", "ZAPISZ PLIK", this);
-		printButton = myWindow.createButton(printIcon, null, null, this);
-		exitButton = myWindow.createButton(exitIcon, null, null, this);	
-		sumButton = myWindow.createButton(null, "Σ", "SUMUJ WARTOŚĆI TABELI", this);
-		averageButton = myWindow.createButton(null, "x̅", "ŚREDNIA WARTOŚĆ KOMUREK W TABELI", this);
-		minButton = myWindow.createButton(null, "MIN", "NAJMNIEJSZA WARTOŚĆ", this);
-		maxButton = myWindow.createButton(null, "MAX", "NAJWIĘKSZA WARTOŚĆ W TABELI", this);
-		helpButton = myWindow.createButton(helpIcon, null, null, this);
-		infoButton = myWindow.createButton(infoIcon, null, null, this);
+		saveIcon = getResource("diskette.png");
+		printIcon = getResource("printer.png");
+		exitIcon = getResource("logout.png");
+		sumIcon = getResource("symbol.png");
+		averageIcon = getResource("average.png");
+		minIcon = getResource("min.png");
+		maxIcon = getResource("plus.png");
+		helpIcon = getResource("question-mark.png");
+		infoIcon = getResource("letter-i.png");
+		
+		saveIcon.setImage(saveIcon.getImage().getScaledInstance(ICON_WIDTH, -1, java.awt.Image.SCALE_SMOOTH));
+	    printIcon.setImage(printIcon.getImage().getScaledInstance(ICON_WIDTH, -1, java.awt.Image.SCALE_SMOOTH));
+	    exitIcon.setImage(exitIcon.getImage().getScaledInstance(ICON_WIDTH, -1, java.awt.Image.SCALE_SMOOTH));
+	    sumIcon.setImage(sumIcon.getImage().getScaledInstance(ICON_WIDTH, -1, java.awt.Image.SCALE_SMOOTH));
+		averageIcon.setImage(averageIcon.getImage().getScaledInstance(ICON_WIDTH, -1, java.awt.Image.SCALE_SMOOTH));
+		minIcon.setImage(minIcon.getImage().getScaledInstance(ICON_WIDTH, -1, java.awt.Image.SCALE_SMOOTH));
+		maxIcon.setImage(maxIcon.getImage().getScaledInstance(ICON_WIDTH, -1, java.awt.Image.SCALE_SMOOTH));
+	    helpIcon.setImage(helpIcon.getImage().getScaledInstance(ICON_WIDTH, -1, java.awt.Image.SCALE_SMOOTH));
+	    infoIcon.setImage(infoIcon.getImage().getScaledInstance(ICON_WIDTH, -1, java.awt.Image.SCALE_SMOOTH));
+		
+		saveButton = myWindow.createButton(saveIcon, "zapisz", "ZAPISZ PLIK", this);
+		printButton = myWindow.createButton(printIcon, "drukuj", "DRUKUJ PLIK", this);
+		exitButton = myWindow.createButton(exitIcon, "wyjście", "WYJŚCIE", this);	
+		sumButton = myWindow.createButton(sumIcon, "Σ", "SUMUJ WARTOŚĆI TABELI", this);
+		averageButton = myWindow.createButton(averageIcon, "x̅", "ŚREDNIA WARTOŚĆ KOMUREK W TABELI", this);
+		minButton = myWindow.createButton(minIcon, "MIN", "NAJMNIEJSZA WARTOŚĆ", this);
+		maxButton = myWindow.createButton(maxIcon, "MAX", "NAJWIĘKSZA WARTOŚĆ W TABELI", this);
+		helpButton = myWindow.createButton(helpIcon, "pomoc", "POMOC", this);
+		infoButton = myWindow.createButton(infoIcon, "informacje", "INOFORMACJE", this);
 	}
 	
 	private ImageIcon getResource(String resource) {
