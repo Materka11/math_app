@@ -27,10 +27,10 @@ public class LabelPanel extends JPanel {
 		numberInput = createTextInput("0", 100, 20);
 		
 		rowSliderLabel = createlabel("Numer wiersza");
-		rowSlider = createSlider(1, 5, 3, 100, 40);
+		rowSlider = createSlider(1, 5, 1, 100, 40);
 		
 		colSliderLabel = createlabel("Numer kolumny");
-		colSlider = createSlider(1, 5, 3, 100, 40);
+		colSlider = createSlider(1, 5, 1, 100, 40);
 	}
 	
 	private JLabel createlabel(String text) {

@@ -1,7 +1,6 @@
 package app;
 
 import java.awt.event.WindowEvent;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.BorderLayout;
@@ -46,7 +45,7 @@ public class MyWindow extends JFrame {
 		toolBar = new ToolBar(this, centerPanel, menuBar);
 		add(toolBar, BorderLayout.NORTH);
 		
-		statusPanel = new StatusPanel();
+		statusPanel = new StatusPanel(centerPanel);
 		add(statusPanel, BorderLayout.SOUTH);
 	};
 	

@@ -89,8 +89,11 @@ public class ToolBar extends JPanel implements ActionListener {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		
-		for (JButton button : buttons) {
-			toolBar.add(button);
+		for (int i = 0; i < buttons.length; i++) {
+			toolBar.add(buttons[i]);
+			if (i == 2 || i == 6) {
+	            toolBar.addSeparator();
+	        }
 		}
 		
 		return toolBar;

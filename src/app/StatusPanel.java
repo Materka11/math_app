@@ -16,19 +16,37 @@ public class StatusPanel extends JPanel {
 	private static JLabel eventLabel;
 	private static JTextField numRow, numCol;
 	
-	public StatusPanel() {
+	private CenterPanel centerPanel;
+	
+	public StatusPanel(CenterPanel centerPanel) {
+		this.centerPanel = centerPanel;
+		
 		setLayout(new BorderLayout());
 		initGUI();
 		
 		add(createCenterPanel(), BorderLayout.CENTER);
+		
+		centerPanel.getLabelPanel().getRowSlider().addChangeListener(e -> {
+	       numRow.setText(Integer.toString(centerPanel.getLabelPanel().getRowSlider().getValue()));
+	     });
+	        
+	    centerPanel.getLabelPanel().getColSlider().addChangeListener(e -> {
+	       numCol.setText(Integer.toString(centerPanel.getLabelPanel().getColSlider().getValue()));
+	    });
 	}
 	
 	private void initGUI() {
-		eventLabel = new JLabel("Start aplikacji", JLabel.LEFT);
-		numRow = new JTextField("1");
+		eventLabel = new JLabel("Status aplikacji", JLabel.LEFT);
+		
+		String rowValue = Integer.toString(centerPanel.getLabelPanel().getRowSlider().getValue());
+	    String colValue = Integer.toString(centerPanel.getLabelPanel().getColSlider().getValue());
+	    
+		numRow = new JTextField(rowValue);
 		numRow.setHorizontalAlignment(JTextField.RIGHT);
-		numCol = new JTextField("1");
+		numRow.setEditable(false);
+		numCol = new JTextField(colValue);
 		numCol.setHorizontalAlignment(JTextField.RIGHT);
+		numCol.setEditable(false);
 	}
 	
 	private JPanel createCenterPanel() {

@@ -204,6 +204,10 @@ public class CenterPanel extends JPanel implements ActionListener {
 		return bottomPanel;
 	}
 	
+	public LabelPanel getLabelPanel() {
+		return labelPanel;
+	}
+	
 	public JTable getTable() {
 		return table;
 	}
