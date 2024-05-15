@@ -44,6 +44,7 @@ public class CenterPanel extends JPanel implements ActionListener {
 	private JPanel tablePanel, buttonsPanel;
 	private JScrollPane scrollPane;
 	private JTable table;
+	private MyTableModel myTableModel;
 	private LabelPanel labelPanel;
 	private BottomPanel bottomPanel;
 	
@@ -52,8 +53,9 @@ public class CenterPanel extends JPanel implements ActionListener {
 	public CenterPanel(MyWindow myWindow) {
 		this.myWindow = myWindow;
 		labelPanel = new LabelPanel();
+		myTableModel = new MyTableModel(TABLE_VALUES, TABLE_COLUMN_NAMES);
 		
-		table = createTable(TABLE_VALUES, TABLE_COLUMN_NAMES);
+		table = createTable(myTableModel);
 		scrollPane = createScrollPane(table);
 		initGUI();
 		buttonsPanel = createButtonsPanel(new JButton[] {addButton, resetButton, fillButton, saveValuesButton});	
@@ -79,8 +81,8 @@ public class CenterPanel extends JPanel implements ActionListener {
 		return tablePanel;
 	}
 	
-	private JTable createTable(Object[][] value, String[] colNames) {
-		table = new JTable(value, colNames);
+	private JTable createTable(TableModel myTableModel) {
+		table = new JTable(myTableModel);
 		
 		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		table.setFont(new Font("Calibri", Font.PLAIN, 13));
