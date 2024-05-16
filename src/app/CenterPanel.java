@@ -6,10 +6,7 @@ import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -23,6 +20,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
@@ -89,11 +87,11 @@ public class CenterPanel extends JPanel implements ActionListener {
 		table.setEnabled(false);
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
-		table.getColumnModel().getColumn(0).setCellRenderer(r);
-		table.getColumnModel().getColumn(1).setCellRenderer(r);
-		table.getColumnModel().getColumn(2).setCellRenderer(r);
-		table.getColumnModel().getColumn(3).setCellRenderer(r);
-		table.getColumnModel().getColumn(4).setCellRenderer(r);
+	    r.setHorizontalAlignment(SwingConstants.RIGHT); 
+
+	    for (int i = 0; i < table.getColumnCount(); i++) {
+	        table.getColumnModel().getColumn(i).setCellRenderer(r);
+	    }
 		
 		return table;
 	}

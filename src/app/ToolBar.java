@@ -3,12 +3,9 @@ package app;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -106,19 +103,19 @@ public class ToolBar extends JPanel implements ActionListener {
 			myWindow.closeWindow();
 		}
 		if(e.getSource() == sumButton) {
-			int sum = bottomPanel.getSum(table);
+			int sum = bottomPanel.getCalculationController().getCalculationModel().getSum(table);
 			textArea.setText("Suma elementów wynosi: " + sum);
 		}
 		if(e.getSource() == averageButton) {
-			double average = bottomPanel.getAverage(table);
+			double average = bottomPanel.getCalculationController().getCalculationModel().getAverage(table);
 			textArea.setText("Średnia wartość elementów wynosi: " + average);
 		}
 		if(e.getSource() == minButton) {
-			int min = bottomPanel.getMin(table);
+			int min = bottomPanel.getCalculationController().getCalculationModel().getMin(table);
 			textArea.setText("Najmniejsza wartość w tabeli to: " + min);
 		}
 		if(e.getSource() == maxButton) {
-			int max = bottomPanel.getMax(table);
+			int max = bottomPanel.getCalculationController().getCalculationModel().getMax(table);
 			textArea.setText("Największa wartość w tabeli to: " + max);
 		}
 		if(e.getSource() == saveButton) {

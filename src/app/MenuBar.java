@@ -1,7 +1,6 @@
 package app;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
@@ -106,19 +105,19 @@ public class MenuBar extends JMenuBar implements ActionListener {
 			toggleFullScreen(myWindow);
 		}
 		if(e.getActionCommand().equals("Suma")) {
-			int sum = bottomPanel.getSum(table);
+			int sum = bottomPanel.getCalculationController().getCalculationModel().getSum(table);
 			textArea.setText("Suma elementów wynosi: " + sum);
 		}
 		if(e.getActionCommand().equals("Średnia")) {
-			double average = bottomPanel.getAverage(table);
+			double average = bottomPanel.getCalculationController().getCalculationModel().getAverage(table);
 			textArea.setText("Średnia wartość elementów wynosi: " + average);
 		}
 		if(e.getActionCommand().equals("Wartość Minimalna")) {
-			int min = bottomPanel.getMin(table);
+			int min = bottomPanel.getCalculationController().getCalculationModel().getMin(table);
 			textArea.setText("Najmniejsza wartość w tabeli to: " + min);
 		}
 		if(e.getActionCommand().equals("Wartość Maksymalna")) {
-			int max = bottomPanel.getMax(table);
+			int max = bottomPanel.getCalculationController().getCalculationModel().getMax(table);
 			textArea.setText("Największa wartość w tabeli to: " + max);
 		}
 		if(e.getActionCommand().equals("Informacje o aplikacji")) {

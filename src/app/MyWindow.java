@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class MyWindow extends JFrame {
-	private final int HEIGHT_WINDOW = 450;
+	private final int HEIGHT_WINDOW = 550;
 	private final int WIDTH_WINDOW = 650;
 	
 	private JPanel contentPane;
