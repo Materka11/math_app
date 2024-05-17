@@ -13,7 +13,7 @@ import com.l2fprod.common.swing.JTaskPane;
 
 public class MyWindow extends JFrame {
 	private final int HEIGHT_WINDOW = 550;
-	private final int WIDTH_WINDOW = 850;
+	private final int WIDTH_WINDOW = 1000;
 	
 	private JPanel contentPane;
 	
@@ -38,9 +38,6 @@ public class MyWindow extends JFrame {
 		
 		createContentPane(contentPane);
 		
-		navigationPanel = new NavigationPanel();
-		add(navigationPanel, BorderLayout.WEST);
-		
 		centerPanel = new CenterPanel(this);	
 		add(centerPanel, BorderLayout.CENTER);
 		
@@ -49,6 +46,9 @@ public class MyWindow extends JFrame {
 		
 		toolBar = new ToolBar(this, centerPanel, menuBar);
 		add(toolBar, BorderLayout.NORTH);
+		
+		navigationPanel = new NavigationPanel(toolBar, centerPanel, menuBar);
+		add(navigationPanel, BorderLayout.WEST);
 		
 		statusPanel = new StatusPanel(centerPanel);
 		add(statusPanel, BorderLayout.SOUTH);

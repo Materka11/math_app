@@ -78,10 +78,6 @@ public class ToolBar extends JPanel implements ActionListener {
 		infoButton = myWindow.createButton(infoIcon, "informacje", "INFORMACJE", this);
 	}
 	
-	private ImageIcon getResource(String resource) {
-		return new ImageIcon(MyWindow.class.getResource(ICON_PATH + resource));
-	}
-	
 	private JToolBar createToolBar(JButton[] buttons) {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
@@ -96,7 +92,9 @@ public class ToolBar extends JPanel implements ActionListener {
 		return toolBar;
 	}
 	
-	
+	public ImageIcon getResource(String resource) {
+		return new ImageIcon(MyWindow.class.getResource(ICON_PATH + resource));
+	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == exitButton) {

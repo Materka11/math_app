@@ -31,7 +31,7 @@ public class CalculationView extends JPanel {
         textArea.setLineWrap(true);
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(myWindow.getWidth() - 300, 100));
+        scrollPane.setPreferredSize(new Dimension(myWindow.getWidth() - 400, 100));
         Border textBorder = BorderFactory.createLineBorder(Color.BLACK);
         textArea.setBorder(textBorder);
 
