@@ -9,10 +9,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import com.l2fprod.common.swing.JTaskPane;
 
 public class MyWindow extends JFrame {
 	private final int HEIGHT_WINDOW = 550;
-	private final int WIDTH_WINDOW = 650;
+	private final int WIDTH_WINDOW = 850;
 	
 	private JPanel contentPane;
 	
@@ -20,6 +21,7 @@ public class MyWindow extends JFrame {
 	private ToolBar toolBar;
 	private CenterPanel centerPanel;
 	private StatusPanel statusPanel;
+	private NavigationPanel navigationPanel;
 	
 	public MyWindow() {
 		setTitle("MyWindow v.1.0.1");
@@ -35,6 +37,9 @@ public class MyWindow extends JFrame {
 		});
 		
 		createContentPane(contentPane);
+		
+		navigationPanel = new NavigationPanel();
+		add(navigationPanel, BorderLayout.WEST);
 		
 		centerPanel = new CenterPanel(this);	
 		add(centerPanel, BorderLayout.CENTER);
