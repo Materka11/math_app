@@ -9,8 +9,10 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.Random;
 
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,6 +29,9 @@ import javax.swing.table.TableModel;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+
+import com.toedter.calendar.JDateChooser;
 
 public class CenterPanel extends JPanel implements ActionListener {
 	private static final Object[][] TABLE_VALUES = {
@@ -39,12 +44,13 @@ public class CenterPanel extends JPanel implements ActionListener {
 	private static final String[] TABLE_COLUMN_NAMES = { "1", "2", "3", "4", "5" };
 	
 	private JButton addButton, resetButton, fillButton, saveValuesButton;
-	private JPanel tablePanel, buttonsPanel;
+	private JPanel tablePanel, buttonsPanel, calendarPanel;
 	private JScrollPane scrollPane;
 	private JTable table;
 	private MyTableModel myTableModel;
 	private LabelPanel labelPanel;
 	private BottomPanel bottomPanel;
+	private JDateChooser dateChooser;
 	
 	private MyWindow myWindow;
 	
@@ -56,11 +62,11 @@ public class CenterPanel extends JPanel implements ActionListener {
 		table = createTable(myTableModel);
 		scrollPane = createScrollPane(table);
 		initGUI();
-		buttonsPanel = createButtonsPanel(new JButton[] {addButton, resetButton, fillButton, saveValuesButton});	
+		calendarPanel = createCalendarPanel(dateChooser);
+		buttonsPanel = createButtonsPanel(new JButton[] {addButton, resetButton, fillButton, saveValuesButton});
 		tablePanel = createTablePanel(scrollPane, buttonsPanel);
-		
 		bottomPanel = new BottomPanel(myWindow, table);
-		createCenterPanel(labelPanel, tablePanel);
+		createCenterPanel(labelPanel, tablePanel, bottomPanel);
 	}
 	
 	private void initGUI() {
@@ -68,15 +74,46 @@ public class CenterPanel extends JPanel implements ActionListener {
 		resetButton = myWindow.createButton(null, "WYZERUJ", "WYZERUJ", this);
 		fillButton = myWindow.createButton(null, "WYPEŁNIJ", "WYPEŁNIJ", this);
 		saveValuesButton = myWindow.createButton(null, "ZAPISZ", "ZAPISZ", this);
+		
+		dateChooser = new JDateChooser();
+	       dateChooser.setDateFormatString("yyyy-MM-dd");
+	       dateChooser.addPropertyChangeListener("date", evt -> {
+	           Date selectedDate = dateChooser.getDate();
+	           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	           String dateString = sdf.format(selectedDate);
+	           bottomPanel.getTextArea().setText("Wybrana data: " + dateString);
+	       });
+	}
+	
+	private JPanel createCalendarPanel(JDateChooser dataChooser) {
+		JPanel calendarPanel = new JPanel(new BorderLayout());
+		
+		calendarPanel.add(dateChooser, BorderLayout.CENTER);
+		
+		return calendarPanel;
 	}
 	
 	private JPanel createTablePanel(JScrollPane scrollPane, JPanel buttonsPanel) {
-		JPanel tablePanel = new JPanel(new FlowLayout());
-		
-		tablePanel.add(scrollPane);
-		tablePanel.add(buttonsPanel);
-		
-		return tablePanel;
+		JPanel tablePanel = new JPanel();
+	    GroupLayout layout = new GroupLayout(tablePanel);
+	    tablePanel.setLayout(layout);
+
+	    layout.setAutoCreateGaps(true);
+	    layout.setAutoCreateContainerGaps(true);
+
+	    layout.setHorizontalGroup(
+	        layout.createSequentialGroup()
+	            .addComponent(scrollPane)
+	            .addComponent(buttonsPanel)
+	    );
+
+	    layout.setVerticalGroup(
+	        layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+	            .addComponent(scrollPane)
+	            .addComponent(buttonsPanel)
+	    );
+
+	    return tablePanel;
 	}
 	
 	private JTable createTable(TableModel myTableModel) {
@@ -105,16 +142,17 @@ public class CenterPanel extends JPanel implements ActionListener {
 	}
 	
 	private JPanel createButtonsPanel(JButton[] buttons) {
-		JPanel buttonsPanel = new JPanel(new GridLayout(4, 1));
+		JPanel buttonsPanel = new JPanel(new GridLayout(5, 1));
 		
 		for (JButton button : buttons) {
 			buttonsPanel.add(button);
 		}
+		buttonsPanel.add(calendarPanel);
 		
 		return buttonsPanel;
 	}
 	
-	private void createCenterPanel(JPanel labelPanel, JPanel tablePanel) {
+	private void createCenterPanel(JPanel labelPanel, JPanel tablePanel, JPanel bottomPanel) {
 		JPanel centerPanel = new JPanel(new BorderLayout());
 		
 		centerPanel.add(labelPanel, BorderLayout.NORTH);
