@@ -3,7 +3,6 @@ package app;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FileDialog;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -14,6 +13,7 @@ import java.util.Random;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -33,6 +33,12 @@ import java.text.SimpleDateFormat;
 
 import com.toedter.calendar.JDateChooser;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.statistics.HistogramDataset;
+
 public class CenterPanel extends JPanel implements ActionListener {
 	private static final Object[][] TABLE_VALUES = {
 			{ 0, 0, 0, 0, 0 },
@@ -43,7 +49,7 @@ public class CenterPanel extends JPanel implements ActionListener {
 		};
 	private static final String[] TABLE_COLUMN_NAMES = { "1", "2", "3", "4", "5" };
 	
-	private JButton addButton, resetButton, fillButton, saveValuesButton;
+	private JButton addButton, resetButton, fillButton, saveValuesButton, generateChartButton;
 	private JPanel tablePanel, buttonsPanel, calendarPanel;
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -63,7 +69,7 @@ public class CenterPanel extends JPanel implements ActionListener {
 		scrollPane = createScrollPane(table);
 		initGUI();
 		calendarPanel = createCalendarPanel(dateChooser);
-		buttonsPanel = createButtonsPanel(new JButton[] {addButton, resetButton, fillButton, saveValuesButton});
+		buttonsPanel = createButtonsPanel(new JButton[] {addButton, resetButton, fillButton, saveValuesButton, generateChartButton});
 		tablePanel = createTablePanel(scrollPane, buttonsPanel);
 		bottomPanel = new BottomPanel(myWindow, table);
 		createCenterPanel(labelPanel, tablePanel, bottomPanel);
@@ -83,6 +89,8 @@ public class CenterPanel extends JPanel implements ActionListener {
 	           String dateString = sdf.format(selectedDate);
 	           bottomPanel.getTextArea().setText("Wybrana data: " + dateString);
 	       });
+	       
+	    generateChartButton = myWindow.createButton(null, "GENERUJ WYKRES", "GENERUJ_WYKRES", this);
 	}
 	
 	private JPanel createCalendarPanel(JDateChooser dataChooser) {
@@ -103,13 +111,18 @@ public class CenterPanel extends JPanel implements ActionListener {
 
 	    layout.setHorizontalGroup(
 	        layout.createSequentialGroup()
-	            .addComponent(scrollPane)
+	            .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+	            .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+	            .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 	            .addComponent(buttonsPanel)
 	    );
 
 	    layout.setVerticalGroup(
-	        layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-	            .addComponent(scrollPane)
+	        layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+	            .addGroup(layout.createSequentialGroup()
+	                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+	                .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+	                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 	            .addComponent(buttonsPanel)
 	    );
 
@@ -142,7 +155,7 @@ public class CenterPanel extends JPanel implements ActionListener {
 	}
 	
 	private JPanel createButtonsPanel(JButton[] buttons) {
-		JPanel buttonsPanel = new JPanel(new GridLayout(5, 1));
+		JPanel buttonsPanel = new JPanel(new GridLayout(6, 1));
 		
 		for (JButton button : buttons) {
 			buttonsPanel.add(button);
@@ -160,6 +173,40 @@ public class CenterPanel extends JPanel implements ActionListener {
 	    centerPanel.add(bottomPanel, BorderLayout.SOUTH);
 		add(centerPanel, BorderLayout.CENTER);
 		this.setVisible(true);
+	}
+	
+	private void generateChart(JTable table) {
+	    HistogramDataset dataset = new HistogramDataset();
+	    int rowCount = table.getRowCount();
+	    int columnCount = table.getColumnCount();
+	    double[] values = new double[rowCount * columnCount];
+	    int index = 0;
+
+	    for (int i = 0; i < rowCount; i++) {
+	        for (int j = 0; j < columnCount; j++) {
+	            values[index++] = ((Number) table.getValueAt(i, j)).doubleValue();
+	        }
+	    }
+
+	    dataset.addSeries("Histogram", values, 10);
+
+	    JFreeChart histogram = ChartFactory.createHistogram(
+	        "Histogram",
+	        "Wartości",
+	        "Częstotliwość",
+	        dataset,
+	        PlotOrientation.VERTICAL,
+	        false,
+	        false,
+	        false
+	    );
+
+	    ChartPanel chartPanel = new ChartPanel(histogram);
+	    chartPanel.setPreferredSize(new Dimension(800, 600));
+	    JFrame chartFrame = new JFrame();
+	    chartFrame.setContentPane(chartPanel);
+	    chartFrame.pack();
+	    chartFrame.setVisible(true);
 	}
 	
 	public void addToTable(JSlider colSlider, JSlider rowSlider, JTable table, JTextArea textArea, JTextField numberInput) {
@@ -238,6 +285,8 @@ public class CenterPanel extends JPanel implements ActionListener {
 	    }
 	}
 	
+	
+	
 	public BottomPanel getBottomPanel() {
 		return bottomPanel;
 	}
@@ -264,5 +313,8 @@ public class CenterPanel extends JPanel implements ActionListener {
 		if(e.getSource() == saveValuesButton) {
 			saveTable(table, bottomPanel.getTextArea());
 		}
+		if(e.getSource() == generateChartButton) {
+	        generateChart(table);
+	    }
 	}
 }
