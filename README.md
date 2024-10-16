@@ -20,5 +20,3 @@ git clone https://github.com/Materka11/math_app.git
 javac -d bin src/*.java
 java -cp bin MainClassName
 ```
-## License
-This project is open-source and freely available for modification and use.
